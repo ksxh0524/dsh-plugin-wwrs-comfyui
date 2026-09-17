@@ -1,0 +1,9 @@
+# dsh-plugin-wwrs-comfyui layer：远端 ComfyUI 工作流（W0 空壳；工具在 W1 落地）。
+# config.workspace：项目根（绝对路径）；空串 = 按 env WWRS_WORKSPACE > 中性锚探测。
+# config.comfyuiBaseUrl：远端 ComfyUI 基地址；空串 = env COMFYUI_BASE_URL，缺失即 fail-loud。
+- insert:
+    - id: wwrs-comfyui
+      name: dsh-plugin-wwrs-comfyui
+      config:
+        workspace: ""
+        comfyuiBaseUrl: ""

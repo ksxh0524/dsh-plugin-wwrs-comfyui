@@ -1,0 +1,61 @@
+{
+  "name": "dsh-plugin-wwrs-comfyui",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "ComfyUI workflow DSH plugin (open source): submit/query/wait over remote ComfyUI; workflow templates ship with package. Zero runtime dependencies.",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "comfyui",
+    "media"
+  ],
+  "license": "MIT",
+  "author": "ksxh0524",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ksxh0524/dsh-plugin-wwrs-comfyui.git"
+  },
+  "main": "src/cordis.ts",
+  "files": [
+    "src",
+    "tests",
+    "cordis.patch.yml",
+    "README.md",
+    "README.zh.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "packageManager": "pnpm@11.5.3",
+  "scripts": {
+    "prepare": "husky",
+    "test": "node --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "pnpm format:check && pnpm typecheck && pnpm test"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "@types/node": "^24.2.0",
+    "dsh-check": "link:../dsh-check",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.8.4",
+    "typescript": "^5.9.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs,json,jsonc,md,yml,yaml,html}": "prettier --write"
+  },
+  "exports": {
+    ".": "./src/cordis.ts",
+    "./package.json": "./package.json"
+  }
+}
