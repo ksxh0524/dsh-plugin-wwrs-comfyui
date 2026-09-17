@@ -1,0 +1,424 @@
+{
+  "$comment": "ComfyUI 工作流模板清单（本包能力唯一真源；调用方先调 comfy_templates 再提交，模板必须显式指定）。数值限额为模板级通用约束（时长/字节/数量），仅作本包校验用，不引用任何业务路由 id。模板文件由上游移植源改名收录（通用名），内容为 API 格式工作流。",
+  "version": 1,
+  "templates": {
+    "video-t2v": {
+      "file": "video-t2v-api.json",
+      "kind": "video",
+      "description": "Text-to-video: prompt + duration + aspect + seed.",
+      "params": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6000,
+          "targets": [{ "node": "131", "input": "prompt" }],
+          "description": "成品正文字符串（调用方自备，原文写入）"
+        },
+        "durationSec": {
+          "type": "integer",
+          "required": true,
+          "min": 4,
+          "max": 15,
+          "targets": [{ "node": "133", "input": "value" }],
+          "description": "时长秒（整数）"
+        },
+        "aspect": {
+          "type": "string",
+          "enum": ["16:9", "9:16"],
+          "default": "16:9",
+          "sizeMap": { "16:9": [1344, 768], "9:16": [768, 1344] },
+          "targets": [
+            { "node": "147", "input": "value", "from": "aspectSize", "axis": 0 },
+            { "node": "148", "input": "value", "from": "aspectSize", "axis": 1 }
+          ],
+          "description": "画幅（驱动宽高）"
+        },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "129", "input": "noise_seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {},
+      "outputs": [{ "node": "92", "kind": "video" }]
+    },
+    "video-t2v-1080p": {
+      "file": "video-t2v-1080p-api.json",
+      "kind": "video",
+      "description": "Text-to-video, high-resolution variant (progressive sampler, slower).",
+      "params": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6000,
+          "targets": [{ "node": "136", "input": "prompt" }],
+          "description": "成品正文字符串（调用方自备，原文写入）"
+        },
+        "durationSec": {
+          "type": "integer",
+          "required": true,
+          "min": 4,
+          "max": 15,
+          "targets": [{ "node": "132", "input": "value" }],
+          "description": "时长秒（整数）"
+        },
+        "aspect": {
+          "type": "string",
+          "enum": ["16:9", "9:16"],
+          "default": "16:9",
+          "labelMap": { "16:9": "16:9 (Widescreen)", "9:16": "9:16 (Portrait Widescreen)" },
+          "targets": [{ "node": "115", "input": "aspect_ratio", "from": "aspectLabel" }],
+          "description": "画幅（驱动分辨率选择器）"
+        },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "235", "input": "seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {},
+      "outputs": [{ "node": "180", "kind": "video" }]
+    },
+    "video-i2v": {
+      "file": "video-i2v-api.json",
+      "kind": "video",
+      "description": "Image-to-video: first frame image + prompt + duration + aspect + seed.",
+      "params": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6000,
+          "targets": [{ "node": "133", "input": "prompt" }],
+          "description": "成品正文字符串（调用方自备，原文写入）"
+        },
+        "durationSec": {
+          "type": "integer",
+          "required": true,
+          "min": 4,
+          "max": 15,
+          "targets": [{ "node": "135", "input": "value" }],
+          "description": "时长秒（整数）"
+        },
+        "aspect": {
+          "type": "string",
+          "enum": ["16:9", "9:16"],
+          "default": "16:9",
+          "sizeMap": { "16:9": [1344, 768], "9:16": [768, 1344] },
+          "targets": [
+            { "node": "143", "input": "value", "from": "aspectSize", "axis": 0 },
+            { "node": "144", "input": "value", "from": "aspectSize", "axis": 1 }
+          ],
+          "description": "画幅（驱动宽高）"
+        },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "131", "input": "noise_seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {
+        "firstFrame": {
+          "mode": "direct",
+          "kind": "image",
+          "min": 1,
+          "max": 1,
+          "loaders": [{ "node": "114", "input": "image" }],
+          "formats": ["jpg", "jpeg", "png", "webp", "heic", "heif"],
+          "maxBytes": 31457280
+        }
+      },
+      "outputs": [{ "node": "92", "kind": "video" }]
+    },
+    "video-i2v-1080p": {
+      "file": "video-i2v-1080p-api.json",
+      "kind": "video",
+      "description": "Image-to-video, high-resolution variant (progressive sampler, slower).",
+      "params": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6000,
+          "targets": [{ "node": "136", "input": "prompt" }],
+          "description": "成品正文字符串（调用方自备，原文写入）"
+        },
+        "durationSec": {
+          "type": "integer",
+          "required": true,
+          "min": 4,
+          "max": 15,
+          "targets": [{ "node": "132", "input": "value" }],
+          "description": "时长秒（整数）"
+        },
+        "aspect": {
+          "type": "string",
+          "enum": ["16:9", "9:16"],
+          "default": "16:9",
+          "labelMap": { "16:9": "16:9 (Widescreen)", "9:16": "9:16 (Portrait Widescreen)" },
+          "targets": [{ "node": "115", "input": "aspect_ratio", "from": "aspectLabel" }],
+          "description": "画幅（驱动分辨率选择器）"
+        },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "235", "input": "seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {
+        "firstFrame": {
+          "mode": "direct",
+          "kind": "image",
+          "min": 1,
+          "max": 1,
+          "loaders": [{ "node": "150", "input": "image" }],
+          "formats": ["jpg", "jpeg", "png", "webp", "heic", "heif"],
+          "maxBytes": 31457280
+        }
+      },
+      "outputs": [{ "node": "180", "kind": "video" }]
+    },
+    "video-ref2va": {
+      "file": "video-ref2va-api.json",
+      "kind": "video",
+      "description": "Reference-to-video: reference images + optional reference audios + prompt.",
+      "params": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6000,
+          "targets": [{ "node": "138", "input": "value" }],
+          "description": "成品正文字符串（调用方自备，原文写入）"
+        },
+        "durationSec": {
+          "type": "integer",
+          "required": true,
+          "min": 4,
+          "max": 15,
+          "targets": [{ "node": "132", "input": "value" }],
+          "description": "时长秒（整数）"
+        },
+        "aspect": {
+          "type": "string",
+          "enum": ["16:9", "9:16"],
+          "default": "16:9",
+          "sizeMap": { "16:9": [1344, 768], "9:16": [768, 1344] },
+          "targets": [
+            { "node": "155", "input": "value", "from": "aspectSize", "axis": 0 },
+            { "node": "156", "input": "value", "from": "aspectSize", "axis": 1 }
+          ],
+          "description": "画幅（驱动宽高）"
+        },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "129", "input": "noise_seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {
+        "refImages": {
+          "mode": "core",
+          "kind": "image",
+          "min": 1,
+          "max": 9,
+          "core": { "node": "136", "inputPrefix": "ref_images.ref_image_" },
+          "loaders": [
+            { "node": "137", "input": "image" },
+            { "node": "139", "input": "image" }
+          ],
+          "loaderClass": "LoadImage",
+          "loaderInput": "image",
+          "formats": ["jpg", "jpeg", "png", "webp", "heic", "heif"],
+          "maxBytes": 31457280,
+          "totalMaxBytes": 67108864
+        },
+        "refAudios": {
+          "mode": "core",
+          "kind": "audio",
+          "min": 0,
+          "max": 3,
+          "core": { "node": "136", "inputPrefix": "ref_audios.ref_audio_" },
+          "loaders": [{ "node": "144", "input": "audio" }],
+          "loaderClass": "LoadAudio",
+          "loaderInput": "audio",
+          "formats": ["mp3", "wav", "flac", "m4a", "ogg"],
+          "maxBytes": 31457280,
+          "totalMaxBytes": 31457280
+        }
+      },
+      "outputs": [{ "node": "92", "kind": "video" }]
+    },
+    "video-ref2va-1080p": {
+      "file": "video-ref2va-1080p-api.json",
+      "kind": "video",
+      "description": "Reference-to-video, high-resolution variant (progressive sampler, slower).",
+      "params": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6000,
+          "targets": [{ "node": "232", "input": "value" }],
+          "description": "成品正文字符串（调用方自备，原文写入）"
+        },
+        "durationSec": {
+          "type": "integer",
+          "required": true,
+          "min": 4,
+          "max": 15,
+          "targets": [{ "node": "132", "input": "value" }],
+          "description": "时长秒（整数）"
+        },
+        "aspect": {
+          "type": "string",
+          "enum": ["16:9", "9:16"],
+          "default": "16:9",
+          "labelMap": { "16:9": "16:9 (Widescreen)", "9:16": "9:16 (Portrait Widescreen)" },
+          "targets": [{ "node": "115", "input": "aspect_ratio", "from": "aspectLabel" }],
+          "description": "画幅（驱动分辨率选择器）"
+        },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "235", "input": "seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {
+        "refImages": {
+          "mode": "core",
+          "kind": "image",
+          "min": 1,
+          "max": 9,
+          "core": { "node": "136", "inputPrefix": "ref_images.ref_image_" },
+          "loaders": [
+            { "node": "150", "input": "image" },
+            { "node": "164", "input": "image" }
+          ],
+          "loaderClass": "LoadImage",
+          "loaderInput": "image",
+          "formats": ["jpg", "jpeg", "png", "webp", "heic", "heif"],
+          "maxBytes": 31457280,
+          "totalMaxBytes": 67108864
+        },
+        "refAudios": {
+          "mode": "core",
+          "kind": "audio",
+          "min": 0,
+          "max": 3,
+          "core": { "node": "136", "inputPrefix": "ref_audios.ref_audio_" },
+          "loaders": [],
+          "loaderClass": "LoadAudio",
+          "loaderInput": "audio",
+          "formats": ["mp3", "wav", "flac", "m4a", "ogg"],
+          "maxBytes": 31457280,
+          "totalMaxBytes": 31457280
+        }
+      },
+      "outputs": [{ "node": "180", "kind": "video" }]
+    },
+    "image-base": {
+      "file": "image-base-api.json",
+      "kind": "image",
+      "description": "Text-to-image: prompt + negative + size + batch + seed.",
+      "params": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6000,
+          "targets": [{ "node": "5", "input": "text" }],
+          "description": "成品正文字符串（调用方自备，原文写入）"
+        },
+        "negative": { "type": "string", "maxLength": 2000, "targets": [{ "node": "6", "input": "text" }], "description": "反向描述（可选）" },
+        "width": { "type": "integer", "min": 256, "max": 2048, "default": 1024, "targets": [{ "node": "11", "input": "width" }], "description": "宽（像素）" },
+        "height": {
+          "type": "integer",
+          "min": 256,
+          "max": 2048,
+          "default": 1024,
+          "targets": [{ "node": "11", "input": "height" }],
+          "description": "高（像素）"
+        },
+        "batch": { "type": "integer", "min": 1, "max": 4, "default": 1, "targets": [{ "node": "11", "input": "batch_size" }], "description": "batch 张数" },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "2", "input": "seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {},
+      "outputs": [{ "node": "10", "kind": "image" }]
+    },
+    "image-edit": {
+      "file": "image-edit-api.json",
+      "kind": "image",
+      "description": "Image edit: 1-3 reference images + prompt + size + seed.",
+      "params": {
+        "prompt": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6000,
+          "targets": [{ "node": "68", "input": "prompt" }],
+          "description": "成品正文字符串（调用方自备，原文写入）"
+        },
+        "negative": { "type": "string", "maxLength": 2000, "targets": [{ "node": "69", "input": "prompt" }], "description": "反向描述（可选）" },
+        "width": { "type": "integer", "min": 256, "max": 2048, "default": 928, "targets": [{ "node": "82", "input": "width" }], "description": "宽（像素）" },
+        "height": {
+          "type": "integer",
+          "min": 256,
+          "max": 2048,
+          "default": 1664,
+          "targets": [{ "node": "82", "input": "height" }],
+          "description": "高（像素）"
+        },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "65", "input": "seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {
+        "refs": {
+          "mode": "direct",
+          "kind": "image",
+          "min": 1,
+          "max": 3,
+          "loaders": [
+            { "node": "41", "input": "image" },
+            { "node": "79", "input": "image" },
+            { "node": "81", "input": "image" }
+          ],
+          "dropInputs": [
+            { "node": "68", "input": "image{i}" },
+            { "node": "69", "input": "image{i}" }
+          ],
+          "dropNodes": { "41": ["73"], "79": ["105"], "81": ["104"] },
+          "formats": ["jpg", "jpeg", "png", "webp", "heic", "heif"],
+          "maxBytes": 31457280,
+          "totalMaxBytes": 67108864
+        }
+      },
+      "outputs": [{ "node": "107", "kind": "image" }]
+    },
+    "tts-base": {
+      "file": "tts-base-api.json",
+      "kind": "audio",
+      "description": "Voice design TTS: text + voice description + seed.",
+      "params": {
+        "text": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 2000,
+          "targets": [{ "node": "7", "input": "prompt" }],
+          "description": "合成正文字符串（调用方自备，原文写入）"
+        },
+        "instruct": { "type": "string", "maxLength": 2000, "targets": [{ "node": "11", "input": "prompt" }], "description": "音色描述（可选）" },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "3", "input": "seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {},
+      "outputs": [{ "node": "9", "kind": "audio" }]
+    },
+    "tts-voice-clone": {
+      "file": "tts-voice-clone-api.json",
+      "kind": "audio",
+      "description": "Voice-clone TTS: text + reference audio (+ optional speaker controls).",
+      "params": {
+        "text": {
+          "type": "string",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 2000,
+          "targets": [{ "node": "8", "input": "text" }],
+          "description": "合成正文字符串（调用方自备，原文写入）"
+        },
+        "speaker": { "type": "string", "maxLength": 2000, "targets": [{ "node": "10", "input": "text" }], "description": "说话人控制（可选）" },
+        "seed": { "type": "integer", "min": 0, "targets": [{ "node": "1", "input": "seed" }], "description": "随机种子（可选）" }
+      },
+      "assets": {
+        "refAudio": {
+          "mode": "direct",
+          "kind": "audio",
+          "min": 1,
+          "max": 1,
+          "loaders": [{ "node": "5", "input": "audio" }],
+          "formats": ["mp3", "wav", "flac", "m4a", "ogg"],
+          "maxBytes": 31457280
+        }
+      },
+      "outputs": [{ "node": "15", "kind": "audio" }]
+    }
+  }
+}

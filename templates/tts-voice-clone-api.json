@@ -1,0 +1,83 @@
+{
+  "1": {
+    "inputs": {
+      "script": ["8", 0],
+      "speaker_controls": ["10", 0],
+      "cfg_value": 2,
+      "inference_steps": 10,
+      "seed": 348284948353464,
+      "normalize_text": true,
+      "denoise_reference": true,
+      "max_len": 4096,
+      "retry_badcase": true,
+      "reference_texts": "",
+      "model": ["2", 0],
+      "audio_1": ["5", 0]
+    },
+    "class_type": "RunningHub_VoxCPM_MultiSpeaker_ListReference",
+    "_meta": {
+      "title": "RunningHub VoxCPM Multi-Speaker (Dynamic Audio)"
+    }
+  },
+  "2": {
+    "inputs": {
+      "model_name": "VoxCPM2",
+      "optimize": false,
+      "lora_name": "None"
+    },
+    "class_type": "RunningHub_VoxCPM_LoadModel",
+    "_meta": {
+      "title": "RunningHub VoxCPM Load Model"
+    }
+  },
+  "5": {
+    "inputs": {
+      "audio": "PLACEHOLDER_REF_AUDIO",
+      "audioUI": ""
+    },
+    "class_type": "LoadAudio",
+    "_meta": {
+      "title": "加载音频"
+    }
+  },
+  "8": {
+    "inputs": {
+      "text": ""
+    },
+    "class_type": "JjkText",
+    "_meta": {
+      "title": "Text"
+    }
+  },
+  "10": {
+    "inputs": {
+      "text": ""
+    },
+    "class_type": "JjkText",
+    "_meta": {
+      "title": "Text"
+    }
+  },
+  "12": {
+    "inputs": {
+      "audioUI": "",
+      "audio": ["1", 0]
+    },
+    "class_type": "PreviewAudio",
+    "_meta": {
+      "title": "预览音频"
+    }
+  },
+  "15": {
+    "inputs": {
+      "filename_prefix": "generation/PLACEHOLDER",
+      "format": "mp3",
+      "format.quality": "V0",
+      "audio": ["1", 0]
+    },
+    "class_type": "SaveAudioAdvanced",
+    "_meta": {
+      "title": "Save Audio (Advanced)"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "2": {
+    "inputs": {
+      "audioUI": "",
+      "audio": ["3", 0]
+    },
+    "class_type": "PreviewAudio",
+    "_meta": {
+      "title": "预览音频"
+    }
+  },
+  "3": {
+    "inputs": {
+      "text": ["7", 0],
+      "instruct": ["11", 0],
+      "model_choice": "1.7B",
+      "device": "auto",
+      "precision": "bf16",
+      "language": "Chinese",
+      "seed": 513157669347041,
+      "max_new_tokens": 2048,
+      "top_p": 0.8,
+      "top_k": 20,
+      "temperature": 1,
+      "repetition_penalty": 1.05,
+      "attention": "auto",
+      "unload_model_after_generate": false
+    },
+    "class_type": "FB_Qwen3TTSVoiceDesign",
+    "_meta": {
+      "title": "🎨 Qwen3-TTS VoiceDesign"
+    }
+  },
+  "7": {
+    "inputs": {
+      "prompt": "先生，夫人，少爷，小姐，其实……现在有没有一种技术，叫亲子鉴定？"
+    },
+    "class_type": "CR Prompt Text",
+    "_meta": {
+      "title": "提示词文本"
+    }
+  },
+  "9": {
+    "inputs": {
+      "filename_prefix": "audio/ComfyUI",
+      "audioUI": "",
+      "audio": ["3", 0]
+    },
+    "class_type": "SaveAudio",
+    "_meta": {
+      "title": "保存音频"
+    }
+  },
+  "11": {
+    "inputs": {
+      "prompt": "Female, mid-40s, alto-mezzo range, voice warm and slightly husky with natural vocal fold thickening, moderate pace with deliberate pauses, breath support steady but occasionally shallow, vowels relaxed and rounded, pitch contour gently undulating rather than dramatic, a subtle undertone of fatigue mixed with quiet resilience, as if speaking from years of lived experience, occasional micro-tremor on sustained tones, slight glottal fry at phrase endings, conveying maternal authority tempered by unspoken weariness."
+    },
+    "class_type": "CR Prompt Text",
+    "_meta": {
+      "title": "提示词文本"
+    }
+  }
+}

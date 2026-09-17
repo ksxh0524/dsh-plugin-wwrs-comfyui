@@ -1,0 +1,255 @@
+{
+  "92": {
+    "inputs": {
+      "filename_prefix": "video/MiniMax_H3",
+      "format": "auto",
+      "codec": "auto",
+      "fw_video_preview": "",
+      "video-preview": "",
+      "video": ["130", 0]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "💾 Save Video"
+    }
+  },
+  "119": {
+    "inputs": {
+      "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "VAE加载器"
+    }
+  },
+  "120": {
+    "inputs": {
+      "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "VAE加载器"
+    }
+  },
+  "121": {
+    "inputs": {
+      "samples": ["125", 0],
+      "vae": ["120", 0]
+    },
+    "class_type": "VAEDecodeAudio",
+    "_meta": {
+      "title": "VAE解码_Audio"
+    }
+  },
+  "122": {
+    "inputs": {
+      "samples": ["125", 0],
+      "vae": ["119", 0]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "123": {
+    "inputs": {
+      "sampler_name": "res_multistep"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "K采样器选择"
+    }
+  },
+  "124": {
+    "inputs": {
+      "scheduler": "simple",
+      "steps": 8,
+      "denoise": 1,
+      "model": ["145", 0]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "基础调度器"
+    }
+  },
+  "125": {
+    "inputs": {
+      "noise": ["129", 0],
+      "guider": ["126", 0],
+      "sampler": ["123", 0],
+      "sigmas": ["124", 0],
+      "latent_image": ["136", 1]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "自定义采样器(高级)"
+    }
+  },
+  "126": {
+    "inputs": {
+      "model": ["145", 0],
+      "conditioning": ["136", 0]
+    },
+    "class_type": "BasicGuider",
+    "_meta": {
+      "title": "基础引导"
+    }
+  },
+  "127": {
+    "inputs": {
+      "unet_name": "minimax_h3_ref2va_bf16.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNET加载器"
+    }
+  },
+  "128": {
+    "inputs": {
+      "clip_name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+      "type": "minimax",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "CLIP加载器"
+    }
+  },
+  "129": {
+    "inputs": {
+      "noise_seed": 328519407110074
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "随机噪波"
+    }
+  },
+  "130": {
+    "inputs": {
+      "fps": 24,
+      "bit_depth": 8,
+      "images": ["122", 0],
+      "audio": ["121", 0]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create Video"
+    }
+  },
+  "131": {
+    "inputs": {
+      "expression": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17",
+      "values.a": ["132", 0]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression"
+    }
+  },
+  "132": {
+    "inputs": {
+      "value": 7
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "Float (Duration)"
+    }
+  },
+  "136": {
+    "inputs": {
+      "prompt": ["138", 0],
+      "width": ["155", 0],
+      "height": ["156", 0],
+      "length": ["131", 1],
+      "ref_image_size": "match",
+      "clip": ["128", 0],
+      "vae": ["119", 0],
+      "audio_vae": ["120", 0],
+      "ref_images.ref_image_0": ["137", 0],
+      "ref_images.ref_image_1": ["139", 0],
+      "ref_audios.ref_audio_0": ["144", 0]
+    },
+    "class_type": "MiniMaxH3ReferenceToVideo",
+    "_meta": {
+      "title": "MiniMax H3 Reference to Video"
+    }
+  },
+  "137": {
+    "inputs": {
+      "image": "7671e431cb6e77744a84f872efeb79f66d94a2af2b79f22d46cf16b522cc8a44.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "1"
+    }
+  },
+  "138": {
+    "inputs": {
+      "value": "subject_definitions:\n<Picture 1> is the 豪门客厅 scene reference for [Shot 1].\n<Picture 2> is the character identity reference for 杜若晴.\n<Subject 1> is 杜若晴, appearing in <Picture 2>.\n<Audio 1> is the voice-timbre reference for <Subject 1> (S2), containing a Chinese spoken vocal layer.\n\nsummary:\n[reference generation + audio reference] The target video shows <Subject 1>.\n\nretention_analysis:\n<Subject 1> (appears in [Shot 1]): fully_preserved - <Subject 1> is retained from <Picture 2>. Their wardrobe strictly remains identical to <Picture 2>: 灰色格纹抹胸紧身短裙，露出肩颈与锁骨，不穿外套、不披披肩，配黑色尖头高跟鞋、黑色小巧挺括皮质手提包和圆形金色耳钉. Do not change the garment design, color, handbag, shoes, or visible accessories.\n<Picture 1>: fully_preserved - the 豪门客厅 scene layout, lighting, and spatial anchors are retained for [Shot 1].\n<Audio 1>: reference - its timbre guides the <Subject 1> (S2) voice without copying the original signal.\n\ndetailed_description:\nThe target video uses a realistic modern drama style with cinematic production quality, natural skin texture, and restrained color grading.\n[Shot 1] Visible-subject mapping: <Subject 1> = 杜若晴. <Picture 1> supplies the 豪门客厅 scene layout, lighting, and spatial anchors for [Shot 1]. <Subject 1> (杜若晴) stands in the middle of the living room, one hand raised toward the off-screen person she is accusing. The camera holds a stable medium close-up on her face and upper body. <Subject 1> (S2), using the voice timbre referenced from <Audio 1>, speaks in Chinese: <d>[Chinese] 你这么普通，怎么可能是爸妈的女儿！今天我就要夺回属于我的一切！</d>. Her hand gesture settles as the line finishes. The shot ends immediately after the final word, with her mouth closed; no repeated words, no added dialogue, and no extra vocal sound.\n\noverall_soundscape:\n豪门客厅午间环境声：落地窗外远处车流，室内安静，间或杯盏轻响与布料摩擦声。\n\nnon_diegetic_music:\n轻钢琴，节奏舒缓，情绪克制。"
+    },
+    "class_type": "PrimitiveStringMultiline",
+    "_meta": {
+      "title": "Input Text (Prompt)"
+    }
+  },
+  "139": {
+    "inputs": {
+      "image": "fd9fdebb5489a8eb3bc11ddb68755f183bb577b9acd7f67f135cd660be9052f6.png"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "2"
+    }
+  },
+  "144": {
+    "inputs": {
+      "audio": "dd6fa486cfbc578159a12b800c4586b94fbfd0567da2dfaaa438e70a57763a35.mp3",
+      "audioUI": ""
+    },
+    "class_type": "LoadAudio",
+    "_meta": {
+      "title": "A1"
+    }
+  },
+  "145": {
+    "inputs": {
+      "sage_attention": "auto",
+      "allow_compile": false,
+      "model": ["154", 0]
+    },
+    "class_type": "PathchSageAttentionKJ",
+    "_meta": {
+      "title": "Patch Sage Attention KJ"
+    }
+  },
+  "154": {
+    "inputs": {
+      "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors",
+      "strength_model": 0.7500000000000001,
+      "model": ["127", 0]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoRA加载器(仅模型)"
+    }
+  },
+  "155": {
+    "inputs": {
+      "value": 768
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "整数常量"
+    }
+  },
+  "156": {
+    "inputs": {
+      "value": 1344
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "整数常量"
+    }
+  }
+}

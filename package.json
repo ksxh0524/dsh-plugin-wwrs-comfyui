@@ -20,6 +20,7 @@
   "files": [
     "src",
     "tests",
+    "templates",
     "cordis.patch.yml",
     "README.md",
     "README.zh.md"

@@ -1,0 +1,221 @@
+{
+  "92": {
+    "inputs": {
+      "filename_prefix": "video/MiniMax_H3",
+      "format": "auto",
+      "codec": "auto",
+      "fw_video_preview": "",
+      "video": ["130", 0]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "💾 Save Video"
+    }
+  },
+  "119": {
+    "inputs": {
+      "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "VAE加载器"
+    }
+  },
+  "120": {
+    "inputs": {
+      "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "VAE加载器"
+    }
+  },
+  "121": {
+    "inputs": {
+      "samples": ["125", 0],
+      "vae": ["120", 0]
+    },
+    "class_type": "VAEDecodeAudio",
+    "_meta": {
+      "title": "VAE解码_Audio"
+    }
+  },
+  "122": {
+    "inputs": {
+      "samples": ["125", 0],
+      "vae": ["119", 0]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "123": {
+    "inputs": {
+      "sampler_name": "res_multistep"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "K采样器选择"
+    }
+  },
+  "124": {
+    "inputs": {
+      "scheduler": "simple",
+      "steps": 10,
+      "denoise": 1,
+      "model": ["134", 0]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "基础调度器"
+    }
+  },
+  "125": {
+    "inputs": {
+      "noise": ["129", 0],
+      "guider": ["126", 0],
+      "sampler": ["123", 0],
+      "sigmas": ["124", 0],
+      "latent_image": ["131", 1]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "自定义采样器(高级)"
+    }
+  },
+  "126": {
+    "inputs": {
+      "model": ["134", 0],
+      "conditioning": ["131", 0]
+    },
+    "class_type": "BasicGuider",
+    "_meta": {
+      "title": "基础引导"
+    }
+  },
+  "127": {
+    "inputs": {
+      "unet_name": "minimax_h3_fl2va_bf16.safetensors",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNET加载器"
+    }
+  },
+  "128": {
+    "inputs": {
+      "clip_name": "qwen3vl_32b_minimax_h3_int8_convrot.safetensors",
+      "type": "minimax",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "CLIP加载器"
+    }
+  },
+  "129": {
+    "inputs": {
+      "noise_seed": 961593906002271
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "随机噪波"
+    }
+  },
+  "130": {
+    "inputs": {
+      "fps": 24,
+      "bit_depth": 8,
+      "images": ["122", 0],
+      "audio": ["121", 0]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "Create Video"
+    }
+  },
+  "131": {
+    "inputs": {
+      "prompt": "subject_definitions:\n<Picture 1> is the approved storyboard reference for [Shot 1], containing 念安, 冷漠的爸, 艳丽的妈 in the reviewed composition, placement, scene, and lighting.\n<Picture 2> is the character identity reference for 念安.\n<Picture 3> is the character identity reference for 冷漠的爸.\n<Subject 1> is 念安, appearing in <Picture 1>. <Picture 2> is an additional identity reference for this same subject.\n<Subject 2> is 冷漠的爸, appearing in <Picture 1>. <Picture 3> is an additional identity reference for this same subject.\n<Subject 3> is 艳丽的妈, appearing in <Picture 1>.\n<Audio 1> is the voice-timbre reference for the off-screen narrator (S1), containing a Chinese spoken vocal layer.\n\nsummary:\n[reference generation + audio reference] The target video shows <Subject 1>, <Subject 2>, <Subject 3>, narrated by an off-screen narrator.\n\nretention_analysis:\n<Subject 1> (appears in [Shot 1]): fully_preserved - 念安 is retained from <Picture 1>; identity is additionally guided by <Picture 2>.\n<Subject 2> (appears in [Shot 1]): fully_preserved - 冷漠的爸 is retained from <Picture 1>; identity is additionally guided by <Picture 3>.\n<Subject 3> (appears in [Shot 1]): fully_preserved - 艳丽的妈 is retained from <Picture 1>.\n<Audio 1>: reference - its timbre guides the off-screen narrator voice without copying the original signal.\n\ndetailed_description:\n[Shot 1] Visible-subject mapping: <Subject 1> = 念安; <Subject 2> = 冷漠的爸; <Subject 3> = 艳丽的妈. <Picture 1> supplies the reviewed storyboard composition and contains 念安, 冷漠的爸, 艳丽的妈. 现代都市豪门现实真人剧风格，电影级制作质感，真实自然的皮肤纹理。中广景，平视机位。念安站在豪门客厅大理石地面的前景中央，与身后的父亲和母亲隔开一步；父亲和母亲并坐在奶油色沙发上，水晶吊灯位于画面上方。念安低头看自己的朴素衣袖，父母安静坐在沙发上。午后暖光透过落地窗照入，吊灯与室内暖光勾出人物层次，三人面部清晰。镜头以小幅度缓慢推近念安克制的神情。The off-screen narrator (S1), using the voice timbre referenced from <Audio 1>, speaks in Chinese: <d>[Chinese] 我从小就觉得和这个家格格不入。我爸是金融大亨，我妈国际影后。可我脑子一般，长得普通。要说物极必反。</d> The spoken audio comes only from the off-screen narrator (S1); no visible subject speaks.\n\noverall_soundscape:\n豪门客厅安静的室内底噪、远处城市低鸣、空调微风和念安衣袖轻微摩擦声\n\nnon_diegetic_music:\n钢琴与短拨弦动机以中等偏慢速度、低音量进入，保持稀疏织体，结尾不做明显收束。",
+      "width": ["147", 0],
+      "height": ["148", 0],
+      "length": ["132", 1],
+      "clip": ["128", 0],
+      "vae": ["119", 0]
+    },
+    "class_type": "MiniMaxH3ImageToVideo",
+    "_meta": {
+      "title": "MiniMax H3 Image to Video"
+    }
+  },
+  "132": {
+    "inputs": {
+      "expression": "max(5, round(a * 24)) + (5 - (max(5, round(a * 24)) % 17)) % 17",
+      "values.a": ["133", 0]
+    },
+    "class_type": "ComfyMathExpression",
+    "_meta": {
+      "title": "Math Expression"
+    }
+  },
+  "133": {
+    "inputs": {
+      "value": 10
+    },
+    "class_type": "PrimitiveFloat",
+    "_meta": {
+      "title": "Float (duration)"
+    }
+  },
+  "134": {
+    "inputs": {
+      "sage_attention": "auto",
+      "allow_compile": false,
+      "model": ["139", 0]
+    },
+    "class_type": "PathchSageAttentionKJ",
+    "_meta": {
+      "title": "Patch Sage Attention KJ"
+    }
+  },
+  "136": {
+    "inputs": {
+      "anything": ["132", 1]
+    },
+    "class_type": "ShowAnything|Mie",
+    "_meta": {
+      "title": "Show Anything 🐑"
+    }
+  },
+  "139": {
+    "inputs": {
+      "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors",
+      "strength_model": 0.7500000000000001,
+      "model": ["127", 0]
+    },
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": {
+      "title": "LoRA加载器(仅模型)"
+    }
+  },
+  "147": {
+    "inputs": {
+      "value": 1344
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "整数常量"
+    }
+  },
+  "148": {
+    "inputs": {
+      "value": 768
+    },
+    "class_type": "INTConstant",
+    "_meta": {
+      "title": "整数常量"
+    }
+  }
+}
