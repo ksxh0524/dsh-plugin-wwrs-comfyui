@@ -46,6 +46,10 @@ ComfyUI 是 comfyanonymous 的开源项目。本包仅为其 DSH 接入客户端
 
 提交串行：提交走进程内单条 promise 链（单 profile 并发=1 意图）。跨 profile、跨进程不保证串行——并发提交自负。本包只懂通用 ComfyUI 原语（模板/参数/任务 id/节点/产物）；正文字符串由调用方自备原文传入。
 
+## 验证
+
+跑 `pnpm check`（prettier 检查 + `tsc --noEmit` + `node --test tests/*.test.ts`）。
+
 ## 许可
 
 MIT.

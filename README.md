@@ -46,6 +46,10 @@ Call `comfy_templates` first: the template must be explicit, there is no implici
 
 Serial submission: submissions run through one in-process promise chain (single-profile concurrency-1 intent). Cross-profile and cross-process concurrency is not serialized — concurrent submitters are on their own. Only generic ComfyUI primitives are understood here (template/params/promptId/nodes/artifacts); prompt bodies are caller-owned verbatim strings.
 
+## Verify
+
+Run `pnpm check` (prettier check + `tsc --noEmit` + `node --test tests/*.test.ts`).
+
 ## License
 
 MIT.
