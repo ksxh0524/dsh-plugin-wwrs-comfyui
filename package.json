@@ -1,6 +1,6 @@
 {
   "name": "dsh-plugin-wwrs-comfyui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "ComfyUI workflow DSH plugin (open source): submit/query/wait over remote ComfyUI; workflow templates ship with package. Zero runtime dependencies.",
   "keywords": [
